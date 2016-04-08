@@ -31,7 +31,6 @@ class bacula::director::postgresql(
     subscribe   => Postgresql::Server::Db[$db_name],
     notify      => Service[$services],
     require     => [
-      File[$make_bacula_tables],
       Postgresql::Server::Db[$db_name],
     ]
   }
