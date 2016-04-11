@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe 'bacula::director' do
   require 'hiera'
+  let(:hiera_config) { 'hiera.yaml' }
   context 'Debian' do
     let(:facts) {
       {
