@@ -7,3 +7,10 @@ RSpec.configure do |c|
   c.manifest_dir = File.join(fixture_path, 'manifests')
   c.hiera_config = 'hiera.yaml'
 end
+
+RSpec.configure do |c|
+  c.after(:suite) do
+    RSpec::Puppet::Coverage.report!
+  end
+end
+
