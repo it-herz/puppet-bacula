@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/rodjek/rspec-puppet.git
-  revision: 6ac97993fa972a15851a73d55fe3d1c0a85172b5
+  revision: 79d5373dcbfa4cd56c863f9e9ffe8f3b5e02b8a0
   specs:
-    rspec-puppet (1.0.1)
+    rspec-puppet (2.4.0)
       rspec
 
 GEM
@@ -76,18 +76,19 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rspec (3.1.0)
-      rspec-core (~> 3.1.0)
-      rspec-expectations (~> 3.1.0)
-      rspec-mocks (~> 3.1.0)
-    rspec-core (3.1.7)
-      rspec-support (~> 3.1.0)
-    rspec-expectations (3.1.2)
+    rspec (3.4.0)
+      rspec-core (~> 3.4.0)
+      rspec-expectations (~> 3.4.0)
+      rspec-mocks (~> 3.4.0)
+    rspec-core (3.4.4)
+      rspec-support (~> 3.4.0)
+    rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.1.0)
-    rspec-mocks (3.1.3)
-      rspec-support (~> 3.1.0)
-    rspec-support (3.1.2)
+      rspec-support (~> 3.4.0)
+    rspec-mocks (3.4.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.4.0)
+    rspec-support (3.4.1)
     slop (3.6.0)
     travis (1.7.4)
       addressable (~> 2.3)
