@@ -13,7 +13,18 @@ describe 'bacula::director' do
         :ipaddress => '10.0.0.1'
       }
     }
-    it { should contain_class('bacula::director') }
+
+    require 'hiera'
+    let(:hiera_config) { 'spec/fixtures/modules/bacula/hiera.yaml' }
+    hiera = Hiera.new({:config => 'spec/fixtures/modules/bacula/hiera.yaml'})
+    make_bacula_tables = hiera.lookup('make_bacula_tables', nil, nil)
+    let(:params) { { :make_bacula_tables => make_bacula_tables } }
+
+    it {
+      Puppet::Util::Log.level = :debug
+      Puppet::Util::Log.newdestination(:console)
+      should contain_class('bacula::director')
+    }
   end
   context 'RedHat' do
     let(:facts) {
