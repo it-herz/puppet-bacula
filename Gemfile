@@ -3,7 +3,7 @@ source "https://rubygems.org"
 
 group :test do
   gem "rake"
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.4.1'
+  gem "puppet", ENV['PUPPET_VERSION'] || '~> 4.5.0'
   gem "puppet-lint"
   gem 'rspec'
   gem 'rspec-core'
