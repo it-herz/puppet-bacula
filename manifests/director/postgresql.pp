@@ -8,12 +8,12 @@
 #   none
 #
 class bacula::director::postgresql(
-  $make_bacula_tables,
-  $db_name            = $bacula::director::db_name,
-  $db_pw              = $bacula::director::db_pw,
-  $db_user            = $bacula::director::db_user,
-  $services           = $bacula::params::bacula_director_services,
-  $user               = $bacula::params::bacula_user,
+  String $make_bacula_tables,
+  String $db_name  = $bacula::director::db_name,
+  String $db_pw    = $bacula::director::db_pw,
+  String $db_user  = $bacula::director::db_user,
+  String $services = $bacula::params::bacula_director_services,
+  String $user               = $bacula::params::bacula_user,
 ) inherits bacula::params {
 
   require postgresql::server

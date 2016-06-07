@@ -13,6 +13,7 @@ group :test do
   gem "metadata-json-lint"
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper"
+  gem "rspec-puppet-facts"
 end
 
 group :development do

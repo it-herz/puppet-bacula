@@ -104,7 +104,7 @@ class bacula::params {
       $bacula_user              = '_bacula'
       $bacula_group             = '_bacula'
     }
-    default: { fail("bacula::params has no love for ${::operatingsystem}") }
+    default: { fail("bacula::params has no love for ${facts['operatingsystem']}") }
   }
 
   $certfile = "${conf_dir}/ssl/${::clientcert}_cert.pem"
