@@ -13,7 +13,7 @@ class bacula::params {
 
   validate_bool($ssl)
 
-  if $::operatingsystem in ['RedHat', 'CentOS', 'Fedora', 'Scientific'] {
+  if $facts['operatingsystem'] in ['RedHat', 'CentOS', 'Fedora', 'Scientific'] {
     $db_type        = hiera('bacula::params::db_type', 'postgresql')
   } else {
     $db_type        = hiera('bacula::params::db_type', 'pgsql')
@@ -23,7 +23,7 @@ class bacula::params {
   $director         = hiera('bacula::params::director', $::fqdn)
   $director_address = hiera('bacula::params::director_address', $director)
 
-  case $::operatingsystem {
+  case $facts['operatingsystem'] {
     'Ubuntu','Debian': {
       $bacula_director_packages = [ 'bacula-director-common', "bacula-director-${db_type}", 'bacula-console' ]
       $bacula_director_services = [ 'bacula-director' ]
@@ -55,7 +55,7 @@ class bacula::params {
       $bacula_group             = $bacula_user
     }
     'RedHat','CentOS','Fedora','Scientific': {
-      if 0 + $::operatingsystemmajrelease < 7 or ($::operatingsystem == 'Fedora' and 0 + $::operatingsystemmajrelease < 17) {
+      if 0 + $facts['operatingsystemmajrelease'] < 7 or ($facts['operatingsystem'] == 'Fedora' and 0 + $facts['operatingsystemmajrelease'] < 17) {
         $bacula_director_packages = [ 'bacula-director-common', "bacula-director-${db_type}", 'bacula-console' ]
         $bacula_storage_packages  = [ 'bacula-storage-common', "bacula-storage-${db_type}" ]
       } else {
