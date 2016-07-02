@@ -12,7 +12,7 @@
 #
 define bacula::jobdefs (
   $jobtype             = 'Backup',
-  $sched               = 'Default',
+  $sched               = undef,
   $messages            = 'Standard',
   $priority            = '10',
   $pool                = 'Default',

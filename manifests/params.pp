@@ -10,6 +10,9 @@ class bacula::params {
   $monitor        = true
   $ssl            = hiera('bacula::params::ssl', false)
   $ssl_dir        = hiera('bacula::params::ssl_dir', '/etc/puppetlabs/puppet/ssl')
+  $db_path        = '/var/lib/postgresql/data'
+  $db_host        = 'postgresql'
+  $db_port        = 5432
 
   validate_bool($ssl)
 

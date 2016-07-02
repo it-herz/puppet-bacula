@@ -13,8 +13,6 @@ class bacula::storage (
   $device_owner            = $bacula::params::bacula_user,
   $media_type              = 'File',
   $maxconcurjobs           = '5',
-  $packages                = $bacula::params::bacula_storage_packages,
-  $services                = $bacula::params::bacula_storage_services,
   $homedir                 = $bacula::params::homedir,
   $rundir                  = $bacula::params::rundir,
   $conf_dir                = $bacula::params::conf_dir,
@@ -26,15 +24,6 @@ class bacula::storage (
   include bacula::common
   include bacula::ssl
   include bacula::virtual
-
-  realize(Package[$packages])
-
-  service { $services:
-    ensure    => running,
-    enable    => true,
-    subscribe => File[$bacula::ssl::ssl_files],
-    require   => Package[$packages],
-  }
 
   concat::fragment { 'bacula-storage-header':
     order   => 00,
@@ -62,7 +51,6 @@ class bacula::storage (
     owner  => 'root',
     group  => $group,
     mode   => '0640',
-    notify => Service[$services],
   }
 
   if $media_type == 'File' {
@@ -71,7 +59,6 @@ class bacula::storage (
       owner   => $device_owner,
       group   => $group,
       mode    => $device_mode,
-      require => Package[$packages],
     }
   }
 

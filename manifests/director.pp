@@ -15,15 +15,19 @@
 #   }
 #
 class bacula::director (
+  $docker_dns          = $::ipaddress,
   $port                = '9101',
   $listen_address      = $::ipaddress,
-  $db_user             = $bacula::params::bacula_user,
-  $db_pw               = 'notverysecret',
+  $db_user             = 'postgres',
+  $db_pw               = 'postgres',
+  $db_host             = $bacula::params::db_host,
+  $db_port             = $bacula::params::db_port,
   $db_name             = $bacula::params::bacula_user,
   $db_type             = $bacula::params::db_type,
+  $db_path             = $bacula::params::db_path,
+  $storage_path        = $bacula::params::storage_path,
   $password            = 'secret',
   $max_concurrent_jobs = '20',
-  $packages            = $bacula::params::bacula_director_packages,
   $services            = $bacula::params::bacula_director_services,
   $homedir             = $bacula::params::homedir,
   $rundir              = $bacula::params::rundir,
@@ -38,20 +42,27 @@ class bacula::director (
   include bacula::client
   include bacula::ssl
   include bacula::director::defaults
+  include bacula::director::postgresql
   include bacula::virtual
+  
+  require docker
 
-  case $db_type {
-    /^(pgsql|postgresql)$/: { include bacula::director::postgresql }
-    default:                { fail('No db_type set') }
-  }
-
-  realize(Package[$packages])
-
-  service { $services:
-    ensure    => running,
-    enable    => true,
+  docker::run { "bacula":
+    ensure    => present,
+    image     => "itherz/bacula",
+    volumes   => [ "/etc/bacula:/etc/bacula", "${storage_path}:/bacula" ],
+    ports => [ '9101:9101', '9103:9103' ],
+    links => [ 'postgresql:postgresql' ],
+    env => [
+      "DB_HOST=$bacula::params::db_host",
+      "DB_PORT=$bacula::params::db_port",
+      "DB_USER=${db_user}",
+      "DB_NAME=${db_name}",
+      "DB_PASSWORD=${db_pw}"
+    ],
+    dns => [ $docker_dns ],
+    require   => Docker::Run[postgresql],
     subscribe => File[$bacula::ssl::ssl_files],
-    require   => Package[$packages],
   }
 
   file { "${conf_dir}/conf.d":
@@ -63,13 +74,6 @@ class bacula::director (
     group   => $group,
     mode    => '0640',
     content => template('bacula/bconsole.conf.erb');
-  }
-
-  Concat {
-    owner  => 'root',
-    group  => $group,
-    mode   => '0640',
-    notify => Service[$services],
   }
 
   concat::fragment { 'bacula-director-header':
@@ -105,7 +109,9 @@ class bacula::director (
 
   Concat::Fragment <<| tag == "bacula-${director}" |>>
 
-  concat { "${conf_dir}/bacula-dir.conf": }
+  concat { "${conf_dir}/bacula-dir.conf": 
+    notify => Docker::Run["bacula"]
+  }
 
   $sub_confs = [
     "${conf_dir}/conf.d/schedule.conf",
@@ -117,16 +123,18 @@ class bacula::director (
     "${conf_dir}/conf.d/fileset.conf",
   ]
 
-  concat { $sub_confs: }
+  concat { $sub_confs: 
+    notify => Docker::Run["bacula"]
+  }
 
   bacula::fileset { 'Common':
     files => ['/etc'],
   }
 
-  bacula::job { 'RestoreFiles':
-    jobtype  => 'Restore',
-    fileset  => false,
-    jobdef   => false,
-    messages => 'Standard',
-  }
+#  bacula::job { 'RestoreFiles':
+#    jobtype  => 'Restore',
+#    fileset  => false,
+#    jobdef   => false,
+#    messages => 'Standard',
+#  }
 }
