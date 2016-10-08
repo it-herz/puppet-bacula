@@ -5,7 +5,7 @@
 class bacula::storage (
   $port                    = '9103',
   $listen_address          = $::ipaddress,
-  $storage                 = $::fqdn, # storage here is not params::storage
+  $storage                 = $::bacula::params::storage,  # fqdn, # storage here is not params::storage
   $password                = 'secret',
   $device_name             = "${::fqdn}-device",
   $device                  = '/bacula',

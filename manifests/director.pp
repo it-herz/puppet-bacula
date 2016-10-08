@@ -32,7 +32,7 @@ class bacula::director (
   $homedir             = $bacula::params::homedir,
   $rundir              = $bacula::params::rundir,
   $conf_dir            = $bacula::params::conf_dir,
-  $director            = $::fqdn, # director here is not params::director
+  $director            = $bacula::params::director, # fqdn, # director here is not params::director
   $director_address    = $bacula::params::director_address,
   $storage             = $bacula::params::storage,
   $group               = $bacula::params::bacula_group,

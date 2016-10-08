@@ -1,5 +1,5 @@
 Storage {
-    Name                    = <%= @clientcert %>-sd
+    Name                    = <%= scope.lookupvar('bacula::params::storage') %>-sd
     WorkingDirectory        = <%= @homedir %>
     Pid Directory           = <%= @rundir %>
 <% if @listen_address -%>

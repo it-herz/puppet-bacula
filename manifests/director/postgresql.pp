@@ -18,7 +18,7 @@ class bacula::director::postgresql(
   
   docker::run { "postgresql":
     ensure => present,
-    image => "postgres:latest",
+    image => "postgres:9.5",
     pull_on_start => true,
     volumes => [ "${db_path}:/var/lib/postgresql/data" ],
     env => [
