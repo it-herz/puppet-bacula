@@ -23,6 +23,7 @@ class bacula::director::postgresql(
     volumes => [ "${db_path}:/var/lib/postgresql/data" ],
     env => [
       "POSTGRES_PASSWORD=${db_pw}",
+      "SERVICE_IGNORE=true"
     ]
   }
 }
