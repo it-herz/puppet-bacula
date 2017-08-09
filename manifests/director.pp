@@ -60,7 +60,12 @@ class bacula::director (
       "DB_USER=${db_user}",
       "DB_NAME=${db_name}",
       "DB_PASSWORD=${db_pw}",
-      "SERVICE_IGNORE=true"
+      "SERVICE_9101_TAGS=director",
+      "SERVICE_9103_TAGS=storage",
+      "SERVICE_9101_NAME=bacula",
+      "SERVICE_9103_NAME=bacula",
+      "SERVICE_9101_CHECK_TCP=true",
+      "SERVICE_9103_CHECK_TCP=true"
     ],
     dns => [ $docker_dns ],
     require   => Docker::Run[postgresql],
